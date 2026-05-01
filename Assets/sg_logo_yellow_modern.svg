@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1024" height="1024" fill="none">
+  <defs>
+    <style>
+      .y{stroke:#F4C542;stroke-width:34;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+
+  <!-- Interlocking G -->
+  <path class="y" d="M372 150
+                     C344 118 303 100 256 100
+                     C170 100 104 167 104 256
+                     C104 345 170 412 256 412
+                     C333 412 392 359 404 290
+                     H288"/>
+  <path class="y" d="M404 290 V352"/>
+
+  <!-- Stylized S -->
+  <path class="y" d="M320 164
+                     C289 135 233 132 193 159
+                     C159 183 156 225 198 243
+                     L283 278
+                     C324 295 322 338 286 360
+                     C246 385 188 379 153 348"/>
+</svg>

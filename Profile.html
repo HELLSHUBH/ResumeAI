@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | ResumeAI</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Applicant.css">
+</head>
+
+<body style="background-color: #f8f9fa;">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="Home.html">
+                <img src="Assets/sg_logo_yellow_modern.svg" width="30" height="24">
+                ResumeAI
+            </a>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto me-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="Applicant.html">Applicant</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Recruiter.html">Recruiter</a>
+                    </li>
+                </ul>
+            </div>
+
+            <a href="Home.html" class="btn btn-outline-light btn-sm me-2" id="loginNavBtn">
+                LogIn
+            </a>
+
+            <div class="dropdown d-none me-2" id="userMenuBox">
+                <button class="btn btn-dark border border-light d-flex align-items-center gap-2 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <div class="profile-circle" id="navUserDp">U</div>
+                    <span id="navUserName">User</span>
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow p-2 user-dropdown">
+                    <li class="px-2 py-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="profile-circle large" id="dropdownUserDp">U</div>
+                            <div>
+                                <div class="fw-bold" id="dropdownUserName">User Name</div>
+                                <div class="small text-secondary" id="dropdownUserEmail">user@email.com</div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="Profile.html">Profile</a></li>
+                    <li><a class="dropdown-item" href="History.html">History</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><button class="dropdown-item text-danger fw-semibold" id="logoutBtn">Logout</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5" style="margin-top: 70px;">
+        <div class="card shadow border-0 p-4">
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="profile-circle extra-large" id="profileDp">U</div>
+                    <div>
+                        <h3 class="fw-bold mb-1" id="profileNameHeading">User Name</h3>
+                        <p class="text-secondary mb-0" id="profileEmailHeading">user@email.com</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-warning fw-semibold" id="editProfileBtn">
+                    Edit
+                </button>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" id="profileName" disabled>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="profileEmail" disabled>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" class="form-control" id="profileDob" disabled>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Gender</label>
+                    <select class="form-select" id="profileGender" disabled>
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Occupation</label>
+                    <input type="text" class="form-control" id="profileOccupation" disabled>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">User Type</label>
+                    <input type="text" class="form-control" id="profileUserType" disabled>
+                </div>
+            </div>
+
+            <div class="mt-4 d-none" id="profileActionButtons">
+                <button class="btn btn-dark" id="saveProfileBtn">Save Changes</button>
+                <button class="btn btn-secondary" id="cancelProfileBtn">Cancel</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="auth_nav.js"></script>
+    <script src="Profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.env
+venv/
+.venv/
+server_log.txt
+*.log
+
+# Optional: do not upload local database/export files
+*.sql
+*.sqlite
+*.db
+
+# Optional: do not upload generated reports
+*.pdf
+*.docx

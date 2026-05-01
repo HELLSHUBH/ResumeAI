@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter Dashboard | ResumeAI</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Recruiter.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="Home.html">
+                <img src="Assets/sg_logo_yellow_modern.svg" width="30" height="24" class="d-inline-block align-text-top">
+                ResumeAI
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#recruiterNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="recruiterNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="Applicant.html">Applicant</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="Recruiter.html">Recruiter Dashboard</a>
+                    </li>
+                </ul>
+
+                <!-- This hidden span prevents old Recruiter.js from breaking if it uses recruiterName -->
+                <span id="recruiterName" class="d-none"></span>
+
+                <!-- Shown when user is logged out -->
+                <button 
+                    class="btn btn-outline-light btn-sm me-2" 
+                    id="loginNavBtn"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#loginModal">
+                    LogIn
+                </button>
+
+                <!-- Shown when user is logged in -->
+                <div class="dropdown d-none me-2" id="userMenuBox">
+                    <button 
+                        class="btn btn-dark border border-light d-flex align-items-center gap-2 dropdown-toggle" 
+                        type="button" 
+                        data-bs-toggle="dropdown">
+
+                        <div class="profile-circle" id="navUserDp">U</div>
+                        <span id="navUserName">User</span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end shadow p-2 user-dropdown">
+                        <li class="px-2 py-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="profile-circle large" id="dropdownUserDp">U</div>
+
+                                <div>
+                                    <div class="fw-bold" id="dropdownUserName">User Name</div>
+                                    <div class="small text-secondary" id="dropdownUserEmail">user@email.com</div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <a class="dropdown-item" href="Profile.html">Profile</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="History.html">History</a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <button class="dropdown-item text-danger fw-semibold" id="logoutBtn">
+                                Logout
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Recruiter Dashboard -->
+    <main class="recruiter-dashboard">
+        <!-- Left Input Section -->
+        <section class="input-panel">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-secondary small mb-1">RECRUITER INPUT</p>
+                    <h5 class="fw-bold mb-3">Screen Applicants</h5>
+
+                    <div class="mb-3">
+                        <label for="jobTitle" class="form-label fw-semibold">Job Title</label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="jobTitle" 
+                            placeholder="Example: Python Developer">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="jobDescription" class="form-label fw-semibold">Job Description</label>
+                        <textarea 
+                            class="form-control" 
+                            id="jobDescription" 
+                            rows="7" 
+                            placeholder="Paste job description here..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Applicant Resumes</label>
+
+                        <div class="upload-box" id="uploadBox">
+                            <input 
+                                type="file" 
+                                id="applicantResumes" 
+                                accept="application/pdf" 
+                                multiple 
+                                hidden>
+
+                            <div class="upload-content">
+                                <div class="upload-icon">📄</div>
+                                <p class="fw-semibold mb-1">Upload applicant PDFs</p>
+                                <p class="small text-secondary mb-0">Click or drag multiple PDF resumes</p>
+                            </div>
+                        </div>
+
+                        <div id="selectedFiles" class="selected-files mt-3"></div>
+                    </div>
+
+                    <button class="btn btn-primary w-100 fw-semibold" id="rankApplicantsBtn">
+                        Rank Applicants
+                    </button>
+
+                    <p class="small text-secondary mt-3 mb-0">
+                        Applicant resumes will be compared with the given job description and ranked by match score.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Ranking Section -->
+        <section class="ranking-panel">
+            <div class="ranking-header">
+                <div>
+                    <p class="text-secondary small mb-1">ANALYSIS OUTPUT</p>
+                    <h4 class="fw-bold mb-0">Applicant Ranking</h4>
+                </div>
+
+                <div class="ranking-summary">
+                    <div class="summary-card">
+                        <span class="summary-value" id="totalApplicants">0</span>
+                        <span class="summary-label">Applicants</span>
+                    </div>
+
+                    <div class="summary-card">
+                        <span class="summary-value" id="topScore">0%</span>
+                        <span class="summary-label">Top Score</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 mt-3">
+                <div class="card-body">
+                    <div id="emptyState" class="empty-state">
+                        <h5 class="fw-bold">No applicants ranked yet</h5>
+                        <p class="text-secondary mb-0">
+                            Upload applicant resumes, enter the job title and job description, then click Rank Applicants.
+                        </p>
+                    </div>
+
+                    <div class="table-responsive d-none" id="rankingTableWrapper">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Applicant</th>
+                                    <th>Match Score</th>
+                                    <th>Matched Skills</th>
+                                    <th>Missing Skills</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="rankingTableBody">
+                                <!-- Ranking data will be inserted by Recruiter.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 mt-3">
+                <div class="card-body">
+                    <h6 class="fw-bold">Shortlisting Guide</h6>
+
+                    <div class="guide-row">
+                        <span class="badge text-bg-success">80%+</span>
+                        <span>Strong candidate. Suitable for shortlisting.</span>
+                    </div>
+
+                    <div class="guide-row">
+                        <span class="badge text-bg-warning">60% - 79%</span>
+                        <span>Moderate candidate. Needs manual review.</span>
+                    </div>
+
+                    <div class="guide-row">
+                        <span class="badge text-bg-danger">Below 60%</span>
+                        <span>Weak match. Many required skills may be missing.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="loginModalLabel">Log In</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password">
+                            <button type="button" class="btn btn-warning py-1 mt-1" id="toggleLoginPassword">
+                                Show
+                            </button>
+                        </div>
+                    </form>
+
+                    <p class="small mb-0">
+                        Don't have an account?
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal">
+                            Sign up here
+                        </a>
+                    </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning fw-semibold" id="loginButton">
+                        Log In
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="signupName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="signupName" placeholder="Enter your name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupDob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="signupDob">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupGender" class="form-label">Gender</label>
+                            <select class="form-select" id="signupGender">
+                                <option value="" selected disabled>Select your gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupOccupation" class="form-label">Occupation</label>
+                            <input type="text" class="form-control" id="signupOccupation" placeholder="Enter your occupation">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupUserType" class="form-label">User Type</label>
+                            <select class="form-select" id="signupUserType">
+                                <option value="" selected disabled>Select user type</option>
+                                <option value="applicant">Applicant</option>
+                                <option value="recruiter">Recruiter</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="signupPassword" placeholder="Enter your password">
+                            <button type="button" class="btn btn-warning py-1 mt-1" id="toggleSignupPassword">
+                                Show
+                            </button>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupConfirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirm your password">
+                            <button type="button" class="btn btn-warning py-1 mt-1" id="toggleSignupConfirmPassword">
+                                Show
+                            </button>
+                        </div>
+                    </form>
+
+                    <p class="small mb-0">
+                        Already have an account?
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            Log In here
+                        </a>
+                    </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning fw-semibold" id="signupButton">
+                        Sign Up
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Recruiter page logic -->
+    <script src="recruiter.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicant Dashboard | ResumeAI</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="applicant.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="Home.html">
+                <img src="Assets/sg_logo_yellow_modern.svg" width="30" height="24" class="d-inline-block align-text-top">
+                ResumeAI
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#applicantNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="applicantNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="Applicant.html">Applicant Dashboard</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="Recruiter.html">Recruiter</a>
+                    </li>
+                </ul>
+
+                <!-- Shown when user is logged out -->
+                <button 
+                    class="btn btn-outline-light btn-sm me-2" 
+                    id="loginNavBtn"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#loginModal">
+                    LogIn
+                </button>
+
+                <!-- Shown when user is logged in -->
+                <div class="dropdown d-none me-2" id="userMenuBox">
+                    <button 
+                        class="btn btn-dark border border-light d-flex align-items-center gap-2 dropdown-toggle" 
+                        type="button" 
+                        data-bs-toggle="dropdown">
+
+                        <div class="profile-circle" id="navUserDp">U</div>
+                        <span id="navUserName">User</span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end shadow p-2 user-dropdown">
+                        <li class="px-2 py-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="profile-circle large" id="dropdownUserDp">U</div>
+
+                                <div>
+                                    <div class="fw-bold" id="dropdownUserName">User Name</div>
+                                    <div class="small text-secondary" id="dropdownUserEmail">user@email.com</div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <a class="dropdown-item" href="Profile.html">Profile</a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="History.html">History</a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <button class="dropdown-item text-danger fw-semibold" id="logoutBtn">
+                                Logout
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Applicant Dashboard -->
+    <main class="applicant-dashboard">
+        <!-- Left Input Panel -->
+        <section class="input-panel">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <p class="text-secondary small mb-1">APPLICANT INPUT</p>
+                    <h5 class="fw-bold mb-3">Analyze Resume</h5>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Resume PDF</label>
+
+                        <div class="upload-zone" id="uploadZone">
+                            <input type="file" id="resumeFile" accept=".pdf" hidden>
+
+                            <div class="upload-icon">📄</div>
+                            <h6 id="file-content" class="fw-semibold mb-1">Upload your resume</h6>
+                            <p class="text-secondary small mb-0">Click or drag PDF file here</p>
+                        </div>
+
+                        <div class="filename mt-2" id="fileName"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="jobDescription" class="form-label fw-semibold">Job Description</label>
+                        <textarea 
+                            class="form-control" 
+                            id="jobDescription" 
+                            rows="8"
+                            placeholder="Paste the job description or requirements here..."></textarea>
+                    </div>
+
+                    <button class="btn btn-primary w-100 fw-semibold" id="analyzeBtn">
+                        Analyze My Resume
+                    </button>
+
+                    <p class="small text-secondary mt-3 mb-0">
+                        Your resume will be compared with the job description to calculate match score, missing skills, and suggestions.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Result Panel -->
+        <section class="result-panel">
+            <div class="result-header">
+                <div>
+                    <p class="text-secondary small mb-1">ANALYSIS OUTPUT</p>
+                    <h4 class="fw-bold mb-0">Resume Analysis Report</h4>
+                </div>
+
+                <div class="summary-card">
+                    <span class="summary-value" id="scoreText">0%</span>
+                    <span class="summary-label">Match Score</span>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="card shadow-sm border-0 mt-3" id="emptyState">
+                <div class="card-body">
+                    <div class="empty-state">
+                        <h5 class="fw-bold">No resume analyzed yet</h5>
+                        <p class="text-secondary mb-0">
+                            Upload your resume, paste a job description, and click Analyze My Resume.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analysis Result -->
+            <section id="analysisResult" class="d-none mt-3">
+                <div class="card shadow-sm border-0 p-4 mb-3">
+                    <h5 class="fw-bold">Overall Match Score</h5>
+
+                    <p id="scoreRemark" class="text-secondary mb-3"></p>
+
+                    <div class="progress" style="height: 24px;">
+                        <div 
+                            id="scoreProgress" 
+                            class="progress-bar bg-warning text-dark fw-bold" 
+                            role="progressbar" 
+                            style="width: 0%;">
+                            0%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm border-0 p-4 h-100">
+                            <h5 class="fw-bold">Matched Skills</h5>
+                            <div id="matchedSkillsList"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm border-0 p-4 h-100">
+                            <h5 class="fw-bold">Missing Skills</h5>
+                            <div id="missingSkillsList"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0 p-4 mt-3">
+                    <h5 class="fw-bold">Feedback</h5>
+                    <ul id="feedbackList" class="mb-0"></ul>
+                </div>
+
+                <div class="card shadow-sm border-0 p-4 mt-3">
+                    <h5 class="fw-bold">Improvement Suggestions</h5>
+                    <ul id="suggestionList" class="mb-0"></ul>
+                </div>
+
+                <div class="card shadow-sm border-0 p-4 mt-3">
+                    <h5 class="fw-bold">Skill Coverage Chart</h5>
+                    <div class="chart-box">
+                        <canvas id="skillChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="loginModalLabel">Log In</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="loginEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password">
+                            <button type="button" class="btn btn-warning py-1 mt-1" id="toggleLoginPassword">
+                                Show
+                            </button>
+                        </div>
+                    </form>
+
+                    <p class="small mb-0">
+                        Don't have an account?
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal">
+                            Sign up here
+                        </a>
+                    </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning fw-semibold" id="loginButton">
+                        Log In
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="signupName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="signupName" placeholder="Enter your name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupDob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="signupDob">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupGender" class="form-label">Gender</label>
+                            <select class="form-select" id="signupGender">
+                                <option value="" selected disabled>Select your gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupOccupation" class="form-label">Occupation</label>
+                            <input type="text" class="form-control" id="signupOccupation" placeholder="Enter your occupation">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupUserType" class="form-label">User Type</label>
+                            <select class="form-select" id="signupUserType">
+                                <option value="" selected disabled>Select user type</option>
+                                <option value="applicant">Applicant</option>
+                                <option value="recruiter">Recruiter</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="signupPassword" placeholder="Enter your password">
+                            <button type="button" class="btn btn-warning py-1 mt-1" id="toggleSignupPassword">
+                                Show
+                            </button>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="signupConfirmPassword" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Confirm your password">
+                            <button type="button" class="btn btn-warning py-1 mt-1" id="toggleSignupConfirmPassword">
+                                Show
+                            </button>
+                        </div>
+                    </form>
+
+                    <p class="small mb-0">
+                        Already have an account?
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            Log In here
+                        </a>
+                    </p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning fw-semibold" id="signupButton">
+                        Sign Up
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Applicant page logic -->
+    <script src="Applicant.js"></script>
+</body>
+
+</html>

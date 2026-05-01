@@ -1,0 +1,226 @@
+:root {
+    --yellow: #FFD60A;
+    --dark-yellow: #E6B800;
+    --black: #111111;
+    --dark-gray: #1E1E1E;
+    --white: #FFFFFF;
+    --off-white: #F8F9FA;
+    --light-yellow: #FFF3B0;
+    --border-color: #E5E5E5;
+    --muted: #6c757d;
+}
+
+/* Base */
+body {
+    background-color: var(--off-white);
+    color: var(--black);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--black) !important;
+}
+
+.navbar-brand,
+.nav-link {
+    color: var(--white) !important;
+}
+
+.nav-link.active,
+.nav-link:hover {
+    color: var(--yellow) !important;
+}
+
+/* Main Dashboard Layout */
+.applicant-dashboard {
+    padding-top: 80px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 20px;
+
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 20px;
+    min-height: 100vh;
+}
+
+/* Left Input Panel */
+.input-panel {
+    height: calc(100vh - 100px);
+    position: sticky;
+    top: 80px;
+}
+
+.input-panel .card {
+    border-radius: 18px;
+    overflow-y: auto;
+}
+
+/* Upload Box */
+.upload-zone {
+    border: 2px dashed var(--black);
+    border-radius: 16px;
+    padding: 28px 14px;
+    text-align: center;
+    background-color: var(--white);
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.upload-zone:hover,
+.upload-zone.dragover {
+    background-color: var(--light-yellow);
+    border-color: var(--dark-yellow);
+}
+
+.upload-icon {
+    width: 52px;
+    height: 52px;
+    background-color: var(--yellow);
+    color: var(--black);
+    border-radius: 14px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.filename {
+    background-color: #fff8d6;
+    border: 1px solid #ffe66d;
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-size: 0.85rem;
+    color: var(--black);
+    display: none;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--yellow);
+    border-color: var(--yellow);
+    color: var(--black);
+}
+
+.btn-primary:hover {
+    background-color: var(--dark-yellow);
+    border-color: var(--dark-yellow);
+    color: var(--black);
+}
+
+/* Right Result Panel */
+.result-panel {
+    min-width: 0;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.summary-card {
+    background-color: var(--white);
+    padding: 12px 20px;
+    border-radius: 16px;
+    border-left: 5px solid var(--yellow);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.04);
+    min-width: 130px;
+    text-align: center;
+}
+
+.summary-value {
+    display: block;
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: var(--black);
+}
+
+.summary-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.empty-state {
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    border: 2px dashed var(--dark-yellow);
+    border-radius: 16px;
+    background-color: var(--white);
+}
+
+/* Cards */
+.card {
+    border-radius: 18px;
+}
+
+/* Badges */
+.badge {
+    font-size: 0.85rem;
+}
+
+/* Chart */
+.chart-box {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+/* Profile Dropdown */
+.profile-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--yellow);
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.profile-circle.large {
+    width: 46px;
+    height: 46px;
+    font-size: 1.1rem;
+}
+
+.user-dropdown {
+    min-width: 280px;
+    border-radius: 14px;
+}
+
+#userMenuBox button {
+    border-radius: 999px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 992px) {
+    .applicant-dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .input-panel {
+        height: auto;
+        position: static;
+    }
+
+    .result-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .summary-card {
+        width: 100%;
+    }
+}
