@@ -49,9 +49,6 @@ app.register_blueprint(recruiter_history_bp, url_prefix="/api/recruiter")
 # ---------------------------------------------------
 # Test routes
 # ---------------------------------------------------
-@app.route("/api", methods=["GET"])
-def home():
-    return "ResumeAI backend is running on Vercel"
 
 @app.route("/api/test", methods=["GET"])
 def test():
