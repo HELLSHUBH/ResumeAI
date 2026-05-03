@@ -12,9 +12,6 @@ from database import get_db_connection
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PUBLIC_DIR = os.path.join(ROOT_DIR, "public")
 
-if BACKEND_DIR not in sys.path:
-    sys.path.insert(0, BACKEND_DIR)
-
 # ---------------------------------------------------
 # Imports from your existing backend files
 # Same as server.py
