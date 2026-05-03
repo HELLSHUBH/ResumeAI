@@ -1,7 +1,7 @@
 import os
 import sys
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
 
 # ---------------------------------------------------
@@ -10,6 +10,7 @@ from flask_cors import CORS
 # ---------------------------------------------------
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 BACKEND_DIR = os.path.join(ROOT_DIR, "Backend")
+PUBLIC_DIR = os.path.join(ROOT_DIR, "public")
 
 if BACKEND_DIR not in sys.path:
     sys.path.insert(0, BACKEND_DIR)
@@ -50,24 +51,17 @@ app.register_blueprint(recruiter_history_bp, url_prefix="/api/recruiter")
 # Test routes
 # ---------------------------------------------------
 
+@app.route("/", methods=["GET"])
+def home():
+    return send_from_directory(PUBLIC_DIR, "index.html")
+
+
 @app.route("/api/test", methods=["GET"])
 def test():
     return jsonify({
         "success": True,
         "message": "API test successful"
     })
-
-@app.route("/api/routes", methods=["GET"])
-def list_routes():
-    routes = []
-
-    for rule in app.url_map.iter_rules():
-        routes.append({
-            "route": str(rule),
-            "methods": list(rule.methods)
-        })
-
-    return jsonify(routes)
 # ---------------------------------------------------
 # Do NOT add app.run() here.
 # Vercel runs this Flask app automatically.
