@@ -44,7 +44,7 @@ async function loadApplicantHistory() {
             </div>
         `;
 
-        const response = await fetch(`http://localhost:3000/api/history/${userId}`);
+        const response = await fetch(`/api/history/${userId}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -120,7 +120,7 @@ async function loadRecruiterJobs() {
             </div>
         `;
 
-        const response = await fetch(`http://localhost:3000/api/recruiter/history/${recruiterId}`);
+        const response = await fetch(`/api/recruiter/history/${recruiterId}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -219,7 +219,7 @@ async function loadRecruiterJobReports(jobId, reportBox) {
             <p class="text-secondary mb-0">Loading reports...</p>
         `;
 
-        const response = await fetch(`http://localhost:3000/api/recruiter/history/job/${jobId}`);
+        const response = await fetch(`/api/recruiter/history/job/${jobId}`);
         const data = await response.json();
 
         if (!response.ok) {

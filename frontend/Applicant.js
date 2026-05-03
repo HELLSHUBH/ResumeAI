@@ -277,7 +277,7 @@ async function loginUser() {
         loginButton.disabled = true;
         loginButton.textContent = 'Logging in...';
 
-        const response = await fetch('http://localhost:3000/api/login', {
+        const response = await fetch('/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -348,7 +348,7 @@ async function signupUser() {
         signupButton.disabled = true;
         signupButton.textContent = 'Signing up...';
 
-        const response = await fetch('http://localhost:3000/api/signup', {
+        const response = await fetch('/api/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

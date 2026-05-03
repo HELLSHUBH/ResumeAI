@@ -36,7 +36,7 @@ async function loadProfile() {
     const userId = localStorage.getItem('user_id');
 
     try {
-        const response = await fetch(`http://localhost:3000/api/profile/${userId}`);
+        const response = await fetch(`/api/profile/${userId}`);
         const data = await response.json();
 
         if (!response.ok) {
@@ -100,7 +100,7 @@ saveProfileBtn.addEventListener('click', async () => {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/api/profile/${userId}`, {
+        const response = await fetch(`/api/profile/${userId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
