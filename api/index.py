@@ -51,11 +51,6 @@ app.register_blueprint(recruiter_history_bp, url_prefix="/api/recruiter")
 # Test routes
 # ---------------------------------------------------
 
-@app.route("/", methods=["GET"])
-def home():
-    return send_from_directory(PUBLIC_DIR, "index.html")
-
-
 @app.route("/api/test", methods=["GET"])
 def test():
     return jsonify({
