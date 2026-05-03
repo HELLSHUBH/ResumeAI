@@ -54,26 +54,30 @@ app.register_blueprint(recruiter_history_bp, url_prefix="/api/recruiter")
 
 @app.route("/api/db-test", methods=["GET"])
 def db_test():
-    connection = get_db_connection()
+    try:
+        from database import get_db_connection
 
-    if connection is None:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT DATABASE();")
+        result = cursor.fetchone()
+
+        cursor.close()
+        connection.close()
+
+        return jsonify({
+            "success": True,
+            "message": "Database connected successfully",
+            "database": result[0]
+        }), 200
+
+    except Exception as error:
         return jsonify({
             "success": False,
-            "message": "Database connection failed. Check Vercel logs."
+            "message": "Database test failed",
+            "error": str(error)
         }), 500
-
-    cursor = connection.cursor()
-    cursor.execute("SELECT DATABASE();")
-    result = cursor.fetchone()
-
-    cursor.close()
-    connection.close()
-
-    return jsonify({
-        "success": True,
-        "message": "Database connected successfully",
-        "database": result[0]
-    }), 200
 
 @app.route("/api/test", methods=["GET"])
 def test():
