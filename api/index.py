@@ -52,14 +52,82 @@ app.register_blueprint(recruiter_history_bp, url_prefix="/api/recruiter")
 # Test routes
 # ---------------------------------------------------
 
+@app.route("/api/env-test", methods=["GET"])
+def env_test():
+    required_vars = ["DB_HOST", "DB_PORT", "DB_USER", "DB_PASSWORD", "DB_NAME"]
+
+    result = {}
+
+    for var in required_vars:
+        value = os.getenv(var)
+
+        if value:
+            if var == "DB_PASSWORD":
+                result[var] = "Present"
+            else:
+                result[var] = value
+        else:
+            result[var] = "Missing"
+
+    return jsonify({
+        "success": True,
+        "environment_variables": result
+    }), 200
+
+
+@app.route("/api/mysql-import-test", methods=["GET"])
+def mysql_import_test():
+    try:
+        import mysql.connector
+
+        return jsonify({
+            "success": True,
+            "message": "mysql.connector imported successfully"
+        }), 200
+
+    except Exception as error:
+        return jsonify({
+            "success": False,
+            "message": "mysql.connector import failed",
+            "error": str(error)
+        }), 500
+
+
 @app.route("/api/db-test", methods=["GET"])
 def db_test():
     try:
-        from database import get_db_connection
+        import mysql.connector
 
-        connection = get_db_connection()
+        host = os.getenv("DB_HOST")
+        port = os.getenv("DB_PORT")
+        user = os.getenv("DB_USER")
+        password = os.getenv("DB_PASSWORD")
+        database = os.getenv("DB_NAME")
+
+        if not host or not port or not user or not password or not database:
+            return jsonify({
+                "success": False,
+                "message": "Missing database environment variables",
+                "values": {
+                    "DB_HOST": "Present" if host else "Missing",
+                    "DB_PORT": "Present" if port else "Missing",
+                    "DB_USER": "Present" if user else "Missing",
+                    "DB_PASSWORD": "Present" if password else "Missing",
+                    "DB_NAME": "Present" if database else "Missing"
+                }
+            }), 500
+
+        connection = mysql.connector.connect(
+            host=host,
+            port=int(port),
+            user=user,
+            password=password,
+            database=database,
+            connection_timeout=5,
+            ssl_disabled=False
+        )
+
         cursor = connection.cursor()
-
         cursor.execute("SELECT DATABASE();")
         result = cursor.fetchone()
 
@@ -75,7 +143,7 @@ def db_test():
     except Exception as error:
         return jsonify({
             "success": False,
-            "message": "Database test failed",
+            "message": "Database connection failed",
             "error": str(error)
         }), 500
 
