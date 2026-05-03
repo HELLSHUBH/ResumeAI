@@ -10,7 +10,6 @@ from database import get_db_connection
 # inside your Backend folder.
 # ---------------------------------------------------
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-BACKEND_DIR = os.path.join(ROOT_DIR, "Backend")
 PUBLIC_DIR = os.path.join(ROOT_DIR, "public")
 
 if BACKEND_DIR not in sys.path:
