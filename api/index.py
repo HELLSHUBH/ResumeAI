@@ -20,14 +20,14 @@ if BACKEND_DIR not in sys.path:
 # Imports from your existing backend files
 # Same as server.py
 # ---------------------------------------------------
-# import applicant
-# import recruiter
+import applicant
+import recruiter
 
-# from login import login_bp
-# from signup import signup_bp
-# from profile import profile_bp
-# from history import history_bp
-# from recruiter_history import recruiter_history_bp
+from login import login_bp
+from signup import signup_bp
+from profile import profile_bp
+from history import history_bp
+from recruiter_history import recruiter_history_bp
 
 # ---------------------------------------------------
 # Flask app setup
@@ -39,14 +39,14 @@ CORS(app)
 # Register blueprints
 # Same structure as your server.py
 # ---------------------------------------------------
-# app.register_blueprint(applicant.analyze_bp, url_prefix="/api")
-# app.register_blueprint(recruiter.recruiter_bp, url_prefix="/api/recruiter")
+app.register_blueprint(applicant.analyze_bp, url_prefix="/api")
+app.register_blueprint(recruiter.recruiter_bp, url_prefix="/api/recruiter")
 
-# app.register_blueprint(login_bp, url_prefix="/api")
-# app.register_blueprint(signup_bp, url_prefix="/api")
-# app.register_blueprint(profile_bp, url_prefix="/api")
-# app.register_blueprint(history_bp, url_prefix="/api")
-# app.register_blueprint(recruiter_history_bp, url_prefix="/api/recruiter")
+app.register_blueprint(login_bp, url_prefix="/api")
+app.register_blueprint(signup_bp, url_prefix="/api")
+app.register_blueprint(profile_bp, url_prefix="/api")
+app.register_blueprint(history_bp, url_prefix="/api")
+app.register_blueprint(recruiter_history_bp, url_prefix="/api/recruiter")
 
 # ---------------------------------------------------
 # Test routes
@@ -72,7 +72,7 @@ def env_test():
     return jsonify({
         "success": True,
         "environment_variables": result
-    }), 200
+    }),
 
 
 @app.route("/api/mysql-import-test", methods=["GET"])
@@ -90,7 +90,7 @@ def mysql_import_test():
             "success": False,
             "message": "mysql.connector import failed",
             "error": str(error)
-        }), 500
+        }),
 
 
 @app.route("/api/db-test", methods=["GET"])
@@ -115,7 +115,7 @@ def db_test():
                     "DB_PASSWORD": "Present" if password else "Missing",
                     "DB_NAME": "Present" if database else "Missing"
                 }
-            }), 500
+            }),
 
         connection = mysql.connector.connect(
             host=host,
