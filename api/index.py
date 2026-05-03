@@ -3,6 +3,7 @@ import sys
 
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
+from database import get_db_connection
 
 # ---------------------------------------------------
 # This allows Vercel's api/index.py to access files
@@ -50,6 +51,29 @@ app.register_blueprint(recruiter_history_bp, url_prefix="/api/recruiter")
 # ---------------------------------------------------
 # Test routes
 # ---------------------------------------------------
+
+@app.route("/api/db-test", methods=["GET"])
+def db_test():
+    connection = get_db_connection()
+
+    if connection is None:
+        return jsonify({
+            "success": False,
+            "message": "Database connection failed. Check Vercel logs."
+        }), 500
+
+    cursor = connection.cursor()
+    cursor.execute("SELECT DATABASE();")
+    result = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    return jsonify({
+        "success": True,
+        "message": "Database connected successfully",
+        "database": result[0]
+    }), 200
 
 @app.route("/api/test", methods=["GET"])
 def test():
