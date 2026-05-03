@@ -60,6 +60,17 @@ def test():
         "message": "API test successful"
     })
 
+@app.route("/api/routes", methods=["GET"])
+def list_routes():
+    routes = []
+
+    for rule in app.url_map.iter_rules():
+        routes.append({
+            "route": str(rule),
+            "methods": list(rule.methods)
+        })
+
+    return jsonify(routes)
 # ---------------------------------------------------
 # Do NOT add app.run() here.
 # Vercel runs this Flask app automatically.
