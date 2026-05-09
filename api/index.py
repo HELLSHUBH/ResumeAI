@@ -2,6 +2,7 @@ import os
 import sys
 
 from flask import Flask, jsonify
+from flask import send_from_directory
 from flask_cors import CORS
 
 # ---------------------------------------------------
@@ -51,7 +52,7 @@ app.register_blueprint(recruiter_history_bp, url_prefix="/api/recruiter")
 # ---------------------------------------------------
 @app.route("/", methods=["GET"])
 def home():
-    return "ResumeAI backend is running on Vercel"
+    return send_from_directory(ROOT_DIR, "index.html")
 
 @app.route("/api/test", methods=["GET"])
 def test():
